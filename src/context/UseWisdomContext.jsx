@@ -4,7 +4,7 @@ const WisdomContext = createContext();
 
 
 export const WisdomProvider = ({ children }) => {
-    const [theme, setTheme] = useState('purpul');
+    const [theme, setTheme] = useState('blue');
     const apiStatus={
         success:"SUCCESS",
         error:"ERROR",

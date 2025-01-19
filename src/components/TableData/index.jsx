@@ -7,14 +7,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 const columns = [
   { id: 'name', label: 'Name', minWidth: 170 },
   { id: 'email', label: 'Email', minWidth: 170 },
   { id: 'city', label: 'City', minWidth: 170 },
 ];
-
 
 const backgroundColors = [
   '#e5bcdc',
@@ -44,77 +45,127 @@ export default function StickyHeadTable(props) {
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
-        <Table stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              {columns.map((column) => (
-                <TableCell
-                  key={column.id}
-                  align={column.align || 'left'}
-                  style={{ minWidth: column.minWidth ,backgroundColor:"#f9fbfc"}}
-                  
-                >
-                  {column.label}
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {userList
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((user, index) => {
-                    const color = backgroundColors[index % backgroundColors.length]; // Rotate through colors
-                    return (
-                      <TableRow hover role="checkbox" tabIndex={-1} key={user.id} component={Link} to={`/user/${user.id}`}>
-                        {columns.map((column) => {
-                          if (column.id === 'name') {
-                            return (
-                           
-                              <TableCell key={column.id} align={column.align || 'left'} >
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                
-                                  <div
-                                    style={{
-                                      backgroundColor: color,
-                                      color: '#fff',
-                                      borderRadius: '50%',
-                                      width: '40px',
-                                      height: '40px',
-                                      display: 'flex',
-                                      alignItems: 'center',
-                                      justifyContent: 'center',
-                                      fontWeight: 'bold',
-                                      fontSize: '16px',
-
-                                    }}
-                                  >
-                                    {user.name.charAt(0).toUpperCase()}
-                                  </div>
-                                  {/* Full name */}
-                                  <span>{user.name}</span>
-                                </div>
-                              </TableCell>
-                              
-                            );
-                          }
-
-                          const value =
-                            column.id === 'city'
-                              ? user.address.city
-                              : user[column.id];
+        {/* Show loader or fallback if loading */}
+        {isLoading ? (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 440,
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : userList.length === 0 ? (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 440,
+              flexDirection: 'column',
+              textAlign: 'center',
+            }}
+          >
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
+              alt="No results"
+              style={{ width: '30%', marginBottom: '20px' }}
+            />
+            <p>No results found</p>
+          </Box>
+        ) : (
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align || 'left'}
+                    style={{
+                      minWidth: column.minWidth,
+                      backgroundColor: '#f9fbfc',
+                    }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {userList
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((user, index) => {
+                  const color =
+                    backgroundColors[index % backgroundColors.length]; 
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      tabIndex={-1}
+                      key={user.id}
+                      component={Link}
+                      to={`/user/${user.id}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      {columns.map((column) => {
+                        if (column.id === 'name') {
                           return (
-                            <TableCell key={column.id} align={column.align || 'left'}>
-                              {value}
+                            <TableCell
+                              key={column.id}
+                              align={column.align || 'left'}
+                            >
+                              <div
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  gap: '10px',
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    backgroundColor: color,
+                                    color: '#fff',
+                                    borderRadius: '50%',
+                                    width: '40px',
+                                    height: '40px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    fontWeight: 'bold',
+                                    fontSize: '16px',
+                                  }}
+                                >
+                                  {user.name.charAt(0).toUpperCase()}
+                                </div>
+                                <span>{user.name}</span>
+                              </div>
                             </TableCell>
                           );
-                        })}
-                      </TableRow>
-                    );
-                  })}
-          </TableBody>
-        </Table>
+                        }
+
+                        const value =
+                          column.id === 'city'
+                            ? user.address.city
+                            : user[column.id];
+                        return (
+                          <TableCell
+                            key={column.id}
+                            align={column.align || 'left'}
+                          >
+                            {value}
+                          </TableCell>
+                        );
+                      })}
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        )}
       </TableContainer>
-      {!isLoading && (
+      {userList.length > 0 && (
         <TablePagination
           rowsPerPageOptions={[10, 25, 100]}
           component="div"

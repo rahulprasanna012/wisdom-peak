@@ -3,12 +3,21 @@ import { useParams, useNavigate } from "react-router-dom";
 import profileImage from "../../assets/man4.png";
 import { useWisdomContext } from "../../context/UseWisdomContext";
 import SimpleMap from "../GoogleMapInte";
-import { FaEnvelope, FaPhone, FaGlobe, FaBuilding, FaMapMarkerAlt, FaArrowLeft } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaPhone,
+  FaGlobe,
+  FaBuilding,
+  FaMapMarkerAlt,
+  FaArrowLeft,
+} from "react-icons/fa";
+import Skeleton from "@mui/material/Skeleton";
+import NavBar from "../NavBar";
 
 const UserDetail = () => {
   const [user, setUser] = useState(null);
   const { id } = useParams();
-  const { theme,apiStatus } = useWisdomContext();
+  const { theme, apiStatus } = useWisdomContext();
   const [status, setStatus] = useState(apiStatus.loading);
   const navigate = useNavigate();
 
@@ -22,8 +31,10 @@ const UserDetail = () => {
       }
       const data = await response.json();
       setUser(data);
+      setStatus(apiStatus.success);
     } catch (error) {
       console.error("Error fetching data:", error);
+      setStatus(apiStatus.error);
     }
   };
 
@@ -31,21 +42,29 @@ const UserDetail = () => {
     fetchData();
   }, [id]);
 
-  if (!user) {
-    return <h1>load</h1>
-  }
- 
-
-  const { name, username, email, phone, website, address, company } = user;
-  const { street, suite, city, zipcode, geo } = address;
-  const { name: companyName, catchPhrase, bs } = company;
+  // If user data is not available, define default values to prevent crashes.
+  const {
+    name = "",
+    username = "",
+    email = "",
+    phone = "",
+    website = "",
+    address = {},
+    company = {},
+  } = user || {};
+  const { street = "", suite = "", city = "", zipcode = "", geo = {} } =
+    address;
+  const { name: companyName = "", catchPhrase = "", bs = "" } = company;
 
   return (
+    <>
+    <NavBar/> 
     <div
       className={`min-h-screen ${
         theme === "purpul" ? "bg-purple-50" : "bg-indigo-50"
       } p-10`}
     >
+      
       <div
         className={`bg-white shadow-lg rounded-lg p-8 ${
           theme === "purpul" ? "border-purple" : "border-blue"
@@ -64,36 +83,57 @@ const UserDetail = () => {
 
         {/* Header */}
         <div className="flex flex-col md:flex-row items-center md:items-start">
-          <img
-            src={profileImage}
-            alt={name}
-            className="w-32 h-32 rounded-full border-4 border-gray-200 shadow-lg mb-6 md:mb-0 md:mr-8"
-          />
-          <div className="text-center md:text-left">
-            <h1 className="text-4xl font-bold text-gray-800">{name}</h1>
-            <p className="text-gray-600 text-lg">@{username}</p>
-            <div className="mt-4 text-gray-700 space-y-2">
-              <p className="flex items-center gap-2">
-                <FaEnvelope className="text-blue-500" />
-                {email}
-              </p>
-              <p className="flex items-center gap-2">
-                <FaPhone className="text-green-500" />
-                {phone}
-              </p>
-              <p className="flex items-center gap-2">
-                <FaGlobe className="text-indigo-500" />
-                <a
-                  href={`http://${website}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline text-blue-600"
-                >
-                  {website}
-                </a>
-              </p>
+          {/* Profile Image */}
+          {status === apiStatus.loading ? (
+            <Skeleton
+              animation="wave"
+              variant="circular"
+              width={128}
+              height={128}
+            />
+          ) : (
+            <img
+              src={profileImage}
+              alt={name}
+              className="w-32 h-32 rounded-full border-4 border-gray-200 shadow-lg mb-6 md:mb-0 md:mr-8"
+            />
+          )}
+
+          {/* User Details */}
+          {status === apiStatus.loading ? (
+            <div className="flex-1">
+              <Skeleton animation="wave" variant="text" width={200} height={40} />
+              <Skeleton animation="wave" variant="text" width={150} />
+              <Skeleton animation="wave" variant="text" width={180} />
+              <Skeleton animation="wave" variant="text" width={120} />
             </div>
-          </div>
+          ) : (
+            <div className="text-center md:text-left">
+              <h1 className="text-4xl font-bold text-gray-800">{name}</h1>
+              <p className="text-gray-600 text-lg">@{username}</p>
+              <div className="mt-4 text-gray-700 space-y-2">
+                <p className="flex items-center gap-2">
+                  <FaEnvelope className="text-blue-500" />
+                  {email}
+                </p>
+                <p className="flex items-center gap-2">
+                  <FaPhone className="text-green-500" />
+                  {phone}
+                </p>
+                <p className="flex items-center gap-2">
+                  <FaGlobe className="text-indigo-500" />
+                  <a
+                    href={`http://${website}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline text-blue-600"
+                  >
+                    {website}
+                  </a>
+                </p>
+              </div>
+            </div>
+          )}
         </div>
 
         <hr className="my-8 border-gray-300" />
@@ -105,9 +145,19 @@ const UserDetail = () => {
             <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
               <FaBuilding className="text-yellow-500" /> Company
             </h2>
-            <p className="text-gray-700">{companyName}</p>
-            <p className="text-gray-600 italic">{catchPhrase}</p>
-            <p className="text-gray-600">{bs}</p>
+            {status === apiStatus.loading ? (
+              <>
+                <Skeleton animation="wave" variant="text" width={200} />
+                <Skeleton animation="wave" variant="text" width={150} />
+                <Skeleton animation="wave" variant="text" width={180} />
+              </>
+            ) : (
+              <>
+                <p className="text-gray-700">{companyName}</p>
+                <p className="text-gray-600 italic">{catchPhrase}</p>
+                <p className="text-gray-600">{bs}</p>
+              </>
+            )}
           </div>
 
           {/* Address Info */}
@@ -115,14 +165,24 @@ const UserDetail = () => {
             <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
               <FaMapMarkerAlt className="text-red-500" /> Address
             </h2>
-            <p className="text-gray-700">
-              {street}, {suite}
-            </p>
-            <p className="text-gray-700">
-              {city}, {zipcode}
-            </p>
-            <p className="text-gray-600">Lat: {geo.lat}</p>
-            <p className="text-gray-600">Lng: {geo.lng}</p>
+            {status === apiStatus.loading ? (
+              <>
+                <Skeleton animation="wave" variant="text" width={250} />
+                <Skeleton animation="wave" variant="text" width={200} />
+                <Skeleton animation="wave" variant="text" width={150} />
+              </>
+            ) : (
+              <>
+                <p className="text-gray-700">
+                  {street}, {suite}
+                </p>
+                <p className="text-gray-700">
+                  {city}, {zipcode}
+                </p>
+                <p className="text-gray-600">Lat: {geo.lat}</p>
+                <p className="text-gray-600">Lng: {geo.lng}</p>
+              </>
+            )}
           </div>
 
           {/* Map */}
@@ -130,13 +190,23 @@ const UserDetail = () => {
             <h2 className="text-2xl font-semibold text-gray-800 flex items-center gap-2">
               <FaMapMarkerAlt className="text-blue-500" /> Location
             </h2>
-            <div className="w-full h-64">
-              <SimpleMap lat={geo.lat} lng={geo.lng} />
-            </div>
+            {status === apiStatus.loading ? (
+              <Skeleton
+                animation="wave"
+                variant="rectangular"
+                width="100%"
+                height={256}
+              />
+            ) : (
+              <div className="w-full h-64">
+                <SimpleMap lat={geo.lat} lng={geo.lng} />
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -7,7 +7,7 @@ const NavBar = () => {
     const {theme, setTheme} = useWisdomContext();
 
     return (
-        <nav className="flex flex-row justify-between items-center p-6 px-[5%] bg-white ">
+        <nav className="flex flex-row justify-between items-center p-6 px-[5%] bg-white sticky top-0 z-10 ">
 
                 <Link to="/"  className="text-2xl font-bold">WISDOM<span className={`${ (theme==="purpul") ? "text-purpul" :"text-blue"}`} > PEAK</span></Link>
 

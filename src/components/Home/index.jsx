@@ -6,6 +6,7 @@ import { IoIosArrowRoundDown } from "react-icons/io";
 import { IoSearchOutline } from "react-icons/io5";
 import StickyHeadTable from '../TableData';
 import UserContainer from '../UserContainer';
+import NavBar from '../NavBar';
 
 const renderContainer = (users, status) => {
   const userCount = users.length;
@@ -117,6 +118,7 @@ const Home = () => {
 
   return (
     <div className="bg-lightBlue min-h-screen">
+       <NavBar/>
       <ul className="flex flex-wrap justify-evenly items-center gap-6 mt-10 px-4">
         {renderContainer(users, status)}
       </ul>
