@@ -4,7 +4,7 @@ import { PiCityDuotone } from 'react-icons/pi';
 import { MdOutlineHomeWork } from 'react-icons/md';
 import { useWisdomContext } from '../../context/UseWisdomContext';
 
-const TotalItems = ({ text, count, iconText }) => {
+const UserContainer = ({ text, count, iconText }) => {
   const { theme } = useWisdomContext();
 
   // Icons mapping
@@ -32,4 +32,4 @@ const TotalItems = ({ text, count, iconText }) => {
   );
 };
 
-export default TotalItems;
+export default UserContainer;

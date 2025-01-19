@@ -1,9 +1,6 @@
 import{Link} from 'react-router-dom';
-
 import { useWisdomContext } from '../../context/UseWisdomContext';
-import { BsMoonStarsFill } from "react-icons/bs";
-import { MdSunny } from "react-icons/md";
-
+import { MdOutlineColorLens } from "react-icons/md";
 
 
 const NavBar = () => {
@@ -17,7 +14,7 @@ const NavBar = () => {
                 <div className='flex flex-row items-center'>
                         <button onClick={()=>setTheme(theme==="purpul" ? "blue":"purpul")} className='p-2 mx-5'>
                             {
-                                theme==="purpul" ? (<BsMoonStarsFill size={20}  style={{color:"#136df5"}}  />):(<MdSunny style={{color:"#8e87cd"}}  size={20}/>)
+                                <MdOutlineColorLens size={25} className={`${theme==="purpul"? "text-purpul":"text-blue" }`} />
                             }
 
 
