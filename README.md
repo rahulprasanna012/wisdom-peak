@@ -25,14 +25,14 @@ Error Handling: Handles errors when API requests fail.
 Custom Themes: Choose between "purple" or "indigo" themes.
 Google Maps Integration: View user geolocations seamlessly.
 Demo
-Live Demo: Wisdom Peak (Replace with actual live demo link if available)
+Live Demo: Wisdom Peak https://wisdom-peak-project.netlify.app/
 
 Installation
 Clone the repository:
 
 
 
-git clone https://github.com/your-username/wisdom-peak.git
+git clone https://github.com/rahulprasanna012/wisdom-peak.git
 cd wisdom-peak
 Install dependencies:
 
@@ -53,7 +53,7 @@ Material-UI (MUI): UI components for tables, loaders, and pagination.
 Google Maps API: Displays user geolocations on the map.
 JavaScript (ES6+): Core programming language.
 CSS: TailwindCSS.
-
+Api call : Postman
 API Reference
 Wisdom Peak uses the JSONPlaceholder API for fetching user data.
 
