@@ -103,12 +103,17 @@ Company information.
 Screenshots
 
 1. Paginated User List
+![Screenshot 2025-01-19 165139](https://github.com/user-attachments/assets/7d27f6be-6ab6-443f-b010-a8d1f2e80fd0)
 
 2. User Profile Page
+   ![Screenshot 2025-01-19 165200](https://github.com/user-attachments/assets/53d64101-8b90-4124-950c-33f78db2d443)
 
-3. Loading Indicator
+
+
 
 4. Error State
+5. ![image](https://github.com/user-attachments/assets/7b963d2b-abbe-441f-8b5c-e2b7f5a95b87)
+
 
 
 
