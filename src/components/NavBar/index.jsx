@@ -12,7 +12,7 @@ const NavBar = () => {
     return (
         <nav className="flex flex-row justify-between items-center p-6 px-[5%] bg-white ">
 
-                <Link to="/"  className="text-2xl font-bold">Wis<span className={`${ (theme==="purpul") ? "text-purpul" :"text-blue"}`} >dom</span></Link>
+                <Link to="/"  className="text-2xl font-bold">WISDOM<span className={`${ (theme==="purpul") ? "text-purpul" :"text-blue"}`} > PEAK</span></Link>
 
                 <div className='flex flex-row items-center'>
                         <button onClick={()=>setTheme(theme==="purpul" ? "blue":"purpul")} className='p-2 mx-5'>

@@ -3,6 +3,7 @@ import { useWisdomContext } from '../../context/UseWisdomContext';
 import TotalItems from '../TotalItems';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
+import StickyHeadTable from '../TableData';
 
 const Home = () => {
   const { theme, apiStatus } = useWisdomContext();
@@ -49,6 +50,7 @@ const Home = () => {
     },
   ];
 
+  console.log(users);
   return (
     <div className="bg-lightBlue min-h-screen">
       <ul className="flex flex-wrap justify-evenly items-center gap-6 mt-10 px-4">
@@ -57,7 +59,7 @@ const Home = () => {
             
           <li key={data.id} className="w-full sm:w-auto">
             {status === apiStatus.loading ? (<Box sx={{ pt: 0.5 }}>
-                <Skeleton variant="rectangular" width={210} height={118} />
+                <Skeleton variant="rectangular" width={300} height={118} />
               <Skeleton />
               <Skeleton width="60%" />
             </Box>):
@@ -73,6 +75,17 @@ const Home = () => {
         
         ))}
       </ul>
+
+        <div className=' mx-[4%] md:mx-[8%]'>
+
+            <h1 className="text-3xl font-bold mt-10">List of Users</h1>
+            <StickyHeadTable userList={users} isLoading={status==="Loading"}/>
+
+
+        </div>
+
+
+
     </div>
   );
 };
